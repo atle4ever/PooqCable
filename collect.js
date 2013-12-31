@@ -1,4 +1,5 @@
 var casper = require('casper').create({   
+    clientScripts: ["jquery.min.js"],
     verbose: true, 
     logLevel: 'debug',
     pageSettings: {
@@ -21,21 +22,36 @@ casper.on("page.error", function(msg, trace) {
 var url = 'http://www.hi-bogo.net';
 
 casper.start(url, function() {
-   // search for 'casperjs' from google form
-   console.log("page loaded");
    this.fill('form[name="loginForm"]', { 
-        user_id: 'atle4ever', 
-        passwd: 'ahenahen'
+        user_id: 'XXX', 
+        passwd: 'XXX'
     }, true);
 });
 
 casper.then(function(){
-   this.wait(3);
-   this.open('http://www.hi-bogo.net/cdsb/board.php?board=newmovie', {});
+   this.wait(1.5);
+   this.open('http://www.hi-bogo.net/cdsb/board.php?board=kentertain', {});
 });
 
 casper.then(function(){
-   this.echo(this.getHTML());
+    var titles = this.evaluate(function(){
+        var titles = new Array();
+        $("table.board01 a.Font9:lt(3)").each(function() {
+            titles.push('http://www.hi-bogo.net/cdsb/' + $(this).attr("href"));
+            // console.log($(this).text());
+            // console.log('http://www.hi-bogo.net/cdsb/' + $(this).attr("href"));
+        });
+        return titles;
+    });
+
+    this.each(titles, function(self, link) {
+        self.thenOpen(link, function() {
+            var torrent = this.evaluate(function() {
+                return 'http://www.hi-bogo.net/cdsb/' + $('a.link:first').attr("href");
+            });
+            this.download(torrent, 'test.torrent');
+        });
+    });
 });
 
 casper.run();
