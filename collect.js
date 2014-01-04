@@ -32,13 +32,15 @@ casper.start(url, function() {
     }, true);
 });
 
-// Goto korean entertain
 casper.then(function(){
    this.wait(1.5);
+});
+
+// Goto korean entertain
+casper.then(function(){
    this.open('http://www.hi-bogo.net/cdsb/board.php?board=kentertain', {});
 });
 
-// Filter titles and download torrent files
 casper.then(function(){
     var titles = this.evaluate(function(){
         var titles = new Array();
@@ -46,9 +48,58 @@ casper.then(function(){
 
             // Patterns
             var patterns = [
-                new RegExp("정글의 법칙.*HANrel"),
-                new RegExp("마녀사냥.*WITH"),
-                new RegExp("꽃보다 누나.*WITH")
+                new RegExp("K팝스타.*720p-HANrel"),
+                new RegExp("아빠! 어디가.*720p-HANrel"),
+                new RegExp("진짜 사나이.*720p-HANrel"),
+                new RegExp("1박 2일.*720p-HANrel"),
+                new RegExp("슈퍼맨이 돌아왔다.*720p-HANrel"),
+                new RegExp("해피투게더.*720p-HANrel"),
+                new RegExp("힐링캠프.*720p-HANrel"),
+                new RegExp("자기야.*720p-HANrel"),
+                new RegExp("우리결혼했어요.*720p-WITH"),
+                new RegExp("무한도전.*720p-WITH"),
+                new RegExp("정글의 법칙.*720p-WITH"),
+                new RegExp("마녀사냥.*720p-WITH"),
+                new RegExp("꽃보다 누나.*720p-WITH"),
+                new RegExp("썰전.*720p-WITH"),
+                new RegExp("라디오스타.*720p-WITH")
+            ];
+
+            var title = $(this).text();
+            for(var i = 0; i < patterns.length; ++i) {
+                if(title.match(patterns[i])) {
+                    console.log(title);
+                    titles.push('http://www.hi-bogo.net/cdsb/' + $(this).attr("href"));
+                    break;
+                }
+            }
+        });
+        return titles;
+    });
+
+    this.each(titles, function(self, link) {
+        self.thenOpen(link, function() {
+            var torrent = this.evaluate(function() {
+                return [$('a.link:first').text(), 'http://www.hi-bogo.net/cdsb/' + $('a.link:first').attr("href")];
+            });
+            this.download(torrent[1], '/home/sjkim/PooqCableProd/torrent_files/' + torrent[0] + '.torrent');
+        });
+    });
+});
+
+// Goto korean drama (on-going)
+casper.then(function(){
+   this.open('http://www.hi-bogo.net/cdsb/board.php?board=kdramaon', {});
+});
+
+casper.then(function(){
+    var titles = this.evaluate(function(){
+        var titles = new Array();
+        $("table.board01 a.Font9").each(function() {
+
+            // Patterns
+            var patterns = [
+                new RegExp("왕가네 식구들.*720p-HANrel")
             ];
 
             var title = $(this).text();
