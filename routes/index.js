@@ -19,6 +19,12 @@ exports.video = function(req, res) {
     res.sendfile(p);
 };
 
+exports.videoPlay = function(req, res) {
+    var p = req.param('path');
+
+    res.render('video', { video: 'video?path=' + p });
+};
+
 exports.index = function(req, res) {
     var p = req.param('path');
     if(typeof p === 'undefined') {
@@ -37,7 +43,7 @@ exports.index = function(req, res) {
         if(stat.isFile()) {
             // TODO: use audio codec instead of prefix
             if(contents[i].substring(0,2)  == 'C_')
-                videos.push([stat['mtime'].getTime(), contents[i], 'video?path=' + encodeURIComponent(newPath)]);
+                videos.push([stat['mtime'].getTime(), contents[i], 'video_play?path=' + encodeURIComponent(newPath)]);
         } else {
             links.push([contents[i], '?path=' + encodeURIComponent(newPath)]);
         }
