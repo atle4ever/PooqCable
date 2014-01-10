@@ -26,11 +26,22 @@ while True:
         for f in files:
             logger.debug('check: {0}'.format(f))
 
-            # TODO: skip not mp4 files
-            if f.endswith('.mp4') == False: continue
-    
-            if f.startswith('C_'): continue # converted file
-            if 'C_' + f in files: continue # already converted
+            # check extension
+            name, ext = os.path.splitext(f)
+            if ext == '.avi':
+                vcodec = 'libx264'
+                outputOpt = '-s 720x480'
+                prefix = 'C_450p_'
+            elif ext == '.mp4':
+                vcodec = 'copy'
+                outputOpt = ''
+                prefix = 'C_'
+            else: 
+                logger.error('unsupported ext: {0}'.format(ext))
+                continue
+
+            if f.startswith(prefix): continue # converted file
+            if prefix + name + '.mp4' in files: continue # already converted
             
             # check if its audio is AAC
             fullPath = os.path.join(root, f)
@@ -44,11 +55,11 @@ while True:
                 continue
     
             # convert
-            convFile = 'C_' + f
+            convFile = prefix + name + '.mp4'
             tempFilePath = os.path.join('temp', convFile)
             convFilePath = os.path.join(root, convFile)
             logger.info('conversion start')
-            output = commands.getoutput('avconv -i "{0}" -strict experimental -map 0:0 -codec copy -map 0:1 -acodec aac "{1}"'.format(fullPath, tempFilePath))
+            output = commands.getoutput('avconv -i "{0}" -strict experimental -map 0:0 -vcodec {2} -map 0:1 -acodec aac {3} "{1}"'.format(fullPath, tempFilePath, vcodec, outputOpt))
             shutil.move(tempFilePath, convFilePath)
             logger.info('conversion end')
 
