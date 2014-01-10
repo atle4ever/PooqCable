@@ -1,0 +1,2 @@
+# change following variables and rename this file as 'config.py'
+DOWNLOAD_DIR = '/path/to/downloads'
