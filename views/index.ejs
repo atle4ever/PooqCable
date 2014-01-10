@@ -47,7 +47,10 @@
     <!-- Display videos -->
     <% for(var i in videos) { %>
         <tr><td>
-            <a href="<%= videos[i][2] %>"><%= videos[i][1] %></a><br />
+            <a href="<%= videos[i][2] %>">
+                <span class="glyphicon glyphicon-film"></span>
+                <%= videos[i][1] %>
+            </a><br />
         </td></tr>
     <% } %>
 
