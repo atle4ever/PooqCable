@@ -4,7 +4,7 @@ var fs = require('fs');
 var execFile = require("child_process").execFile
 
 var casper = require('casper').create({   
-    clientScripts: ["jquery.min.js"], // To use $(XXX) syntax
+    clientScripts: ["public/javascripts/jquery.min.js"], // To use $(XXX) syntax
     verbose: true, 
     logLevel: 'debug',
     pageSettings: {
