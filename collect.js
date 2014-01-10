@@ -1,5 +1,8 @@
 // Patterns
 
+var fs = require('fs');
+var execFile = require("child_process").execFile
+
 var casper = require('casper').create({   
     clientScripts: ["jquery.min.js"], // To use $(XXX) syntax
     verbose: true, 
@@ -27,7 +30,7 @@ casper.on("page.error", function(msg, trace) {
 var url = 'http://www.hi-bogo.net';
 casper.start(url, function() {
    this.fill('form[name="loginForm"]', { 
-        user_id: 'atle4ever', 
+        user_id: 'atle4ever2', 
         passwd: 'ahenahen'
     }, true);
 });
@@ -82,7 +85,15 @@ casper.then(function(){
             var torrent = this.evaluate(function() {
                 return [$('a.link:first').text(), 'http://www.hi-bogo.net/cdsb/' + $('a.link:first').attr("href")];
             });
-            this.download(torrent[1], '/home/sjkim/PooqCableProd/torrent_files/' + torrent[0] + '.torrent');
+            var torrentPath = '/home/sjkim/PooqCableProd/torrent_files/' + torrent[0] + '.torrent';
+
+            if(!fs.exists(torrentPath)) {
+                this.download(torrent[1], torrentPath);
+                execFile('transmission-remote', ['localhost', '-a', torrentPath], null, function(err, stdout, stderr) {
+                    console.log("execFileSTDOUT:", JSON.stringify(stdout))
+                    console.log("execFileSTDERR:", JSON.stringify(stderr))
+                });
+            }
         });
     });
 });
@@ -99,7 +110,7 @@ casper.then(function(){
 
             // Patterns
             var patterns = [
-                new RegExp("왕가네 식구들.*720p-HANrel")
+                // new RegExp("왕가네 식구들.*720p-HANrel")
             ];
 
             var title = $(this).text();
@@ -119,7 +130,15 @@ casper.then(function(){
             var torrent = this.evaluate(function() {
                 return [$('a.link:first').text(), 'http://www.hi-bogo.net/cdsb/' + $('a.link:first').attr("href")];
             });
-            this.download(torrent[1], '/home/sjkim/PooqCableProd/torrent_files/' + torrent[0] + '.torrent');
+            var torrentPath = '/home/sjkim/PooqCableProd/torrent_files/' + torrent[0] + '.torrent';
+
+            if(!fs.exists(torrentPath)) {
+                this.download(torrent[1], torrentPath);
+                execFile('transmission-remote', ['localhost', '-a', torrentPath], null, function(err, stdout, stderr) {
+                    console.log("execFileSTDOUT:", JSON.stringify(stdout))
+                    console.log("execFileSTDERR:", JSON.stringify(stderr))
+                });
+            }
         });
     });
 });
