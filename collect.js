@@ -69,6 +69,7 @@ casper.then(function(){
                 new RegExp("런닝맨.*720p-WITH")
             ];
 
+            // Collect link of pattern-matched articles
             var title = $(this).text();
             for(var i = 0; i < patterns.length; ++i) {
                 if(title.match(patterns[i])) {
@@ -82,12 +83,14 @@ casper.then(function(){
     });
 
     this.each(titles, function(self, link) {
-        self.thenOpen(link, function() {
+        self.thenOpen(link, function() { // for each article
+            // Collect torrent's link
             var torrent = this.evaluate(function() {
                 return [$('a.link:first').text(), 'http://www.hi-bogo.net/cdsb/' + $('a.link:first').attr("href")];
             });
             var torrentPath = '/home/sjkim/PooqCableProd/torrent_files/' + torrent[0] + '.torrent';
 
+            // If not exist, download torrent files
             if(!fs.exists(torrentPath)) {
                 this.download(torrent[1], torrentPath);
                 execFile('transmission-remote', ['localhost', '-a', torrentPath], null, function(err, stdout, stderr) {
@@ -99,6 +102,7 @@ casper.then(function(){
     });
 });
 
+// TODO: refactoring into single function
 // Goto korean drama (on-going)
 casper.then(function(){
    this.open('http://www.hi-bogo.net/cdsb/board.php?board=kdramaon', {});
@@ -116,6 +120,7 @@ casper.then(function(){
                 new RegExp("왕가네 식구들.*720p-HANrel")
             ];
 
+            // Collect link of pattern-matched articles
             var title = $(this).text();
             for(var i = 0; i < patterns.length; ++i) {
                 if(title.match(patterns[i])) {
@@ -130,11 +135,13 @@ casper.then(function(){
 
     this.each(titles, function(self, link) {
         self.thenOpen(link, function() {
+            // Collect torrent's link
             var torrent = this.evaluate(function() {
                 return [$('a.link:first').text(), 'http://www.hi-bogo.net/cdsb/' + $('a.link:first').attr("href")];
             });
             var torrentPath = '/home/sjkim/PooqCableProd/torrent_files/' + torrent[0] + '.torrent';
 
+            // If not exist, download torrent files
             if(!fs.exists(torrentPath)) {
                 this.download(torrent[1], torrentPath);
                 execFile('transmission-remote', ['localhost', '-a', torrentPath], null, function(err, stdout, stderr) {

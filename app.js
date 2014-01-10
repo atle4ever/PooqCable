@@ -30,6 +30,7 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+// Routing
 app.get('/', routes.index);
 app.get('/video', routes.video);
 app.get('/video_play', routes.videoPlay);
