@@ -52,9 +52,9 @@ casper.then(function(){
             // Patterns
             var patterns = [
                 new RegExp("K팝스타.*720p-HANrel"),
-                new RegExp("아빠! 어디가.*720p-HANrel"),
-                new RegExp("진짜 사나이.*720p-HANrel"),
-                new RegExp("1박 2일.*720p-HANrel"),
+                new RegExp("아빠! 어디 가.*720p-HANrel"),
+                new RegExp("진짜 사나이.*720p-WITH"),
+                new RegExp("1박2일.*720p-HANrel"),
                 new RegExp("슈퍼맨이 돌아왔다.*720p-HANrel"),
                 new RegExp("해피투게더.*720p-HANrel"),
                 new RegExp("힐링캠프.*720p-HANrel"),
@@ -65,7 +65,8 @@ casper.then(function(){
                 new RegExp("마녀사냥.*720p-WITH"),
                 new RegExp("꽃보다 누나.*720p-WITH"),
                 new RegExp("썰전.*720p-WITH"),
-                new RegExp("라디오스타.*720p-WITH")
+                new RegExp("라디오스타.*720p-WITH"),
+                new RegExp("런닝맨.*720p-WITH")
             ];
 
             var title = $(this).text();
@@ -110,7 +111,9 @@ casper.then(function(){
 
             // Patterns
             var patterns = [
-                // new RegExp("왕가네 식구들.*720p-HANrel")
+                new RegExp("정도전.*720p-WITH"),
+                new RegExp("총리와 나.*720p-WITH"),
+                new RegExp("왕가네 식구들.*720p-HANrel")
             ];
 
             var title = $(this).text();
