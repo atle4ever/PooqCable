@@ -1,8 +1,7 @@
 {
     "download-dir": "/home/sjkim/PooqCableProd/downloads", 
 
-    "watch-dir": "/home/sjkim/PooqCableProd/torrent_files", 
-    "watch-dir-enabled": true,
+    "watch-dir-enabled": false,
 
     "idle-seeding-limit": 0, 
     "idle-seeding-limit-enabled": true, 
