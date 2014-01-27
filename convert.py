@@ -26,9 +26,15 @@ logger.addHandler(ch)
 while True:
     logger.info("Let's go!!!")
 
+    stats = []
     for root, dirs, files in os.walk(config.DOWNLOAD_DIR):
         for f in files:
-            logger.debug('check: {0}'.format(f))
+            # collect file's stats - modified time, size, full path
+            fullPath = os.path.join(root, f)
+            size = os.path.getsize(fullPath)
+            mtime = os.path.getmtime(fullPath)
+            logger.debug('check: {0}, size: {1}, mtime: {2}'.format(f, size, mtime))
+            stats.append( [mtime, fullPath, size] )
 
             # check extension
             name, ext = os.path.splitext(f)
@@ -75,6 +81,16 @@ while True:
             logger.info('conversion end')
 
             shutil.move(tempFilePath, convFilePath)
+
+    # check max quota
+    sizeSum = 0
+    stats.sort(reverse=True)
+    for stat in stats:
+        sizeSum += stat[2]
+
+        if(sizeSum > 100 * 1024 * 1024 * 1024):
+            logger.debug('Remove file: {0}'.format(stat[1]))
+            os.remove(stat[1])
 
     # wait 10min
     logger.info('Sleep.. Zzz')
