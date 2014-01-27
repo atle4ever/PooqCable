@@ -13,27 +13,31 @@ var PREFIX = '/home/sjkim/PooqCableProd/downloads';
 // Route: /video
 // return local video
 exports.video = function(req, res) {
-    var p = req.param('path');
+    var p = req.params.path;
     if(typeof p === 'undefined')
         p = '';
 
-    p = path.join(PREFIX, p);
+    var folder = req.params.folder;
+    if(typeof folder === 'undefined')
+        folder = '';
+
+    p = path.join(PREFIX, folder, p);
     res.sendfile(p);
 };
 
 // Route: /video_play
 // display HTML5 video player
 exports.videoPlay = function(req, res) {
-    var p = req.param('path');
+    var p = req.params.path;
 
-    res.render('video', { video: 'video?path=' + p });
+    res.render('video', { video: '/video/' + p });
 };
 
 // Route: /
 // browse local downloads folder
 // It shows files and sub-folders
 exports.index = function(req, res) {
-    var p = req.param('path');
+    var p = req.params.path;
     if(typeof p === 'undefined') {
         p = '';
     }
@@ -57,11 +61,11 @@ exports.index = function(req, res) {
         if(stat.isFile()) {
             // TODO: use audio codec instead of prefix
             if(contents[i].substring(0,2)  == 'C_')
-                videos.push([stat['mtime'].getTime(), contents[i], 'video_play?path=' + encodeURIComponent(newPath)]);
+                videos.push([stat['mtime'].getTime(), contents[i], '/video_play/' + encodeURIComponent(newPath)]);
 
         // For sub-folders
         } else {
-            links.push([contents[i], '?path=' + encodeURIComponent(newPath)]);
+            links.push([contents[i], '/' + encodeURIComponent(newPath)]);
         }
     }
 

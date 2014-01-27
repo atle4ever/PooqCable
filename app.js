@@ -32,8 +32,10 @@ if ('development' == app.get('env')) {
 
 // Routing
 app.get('/', routes.index);
-app.get('/video', routes.video);
-app.get('/video_play', routes.videoPlay);
+app.get('/:path', routes.index);
+app.get('/video/:path', routes.video);
+app.get('/video/:folder/:path', routes.video);
+app.get('/video_play/:path', routes.videoPlay);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
