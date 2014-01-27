@@ -117,6 +117,9 @@ casper.then(function(){
             var patterns = [
                 new RegExp("정도전.*720p-WITH"),
                 new RegExp("총리와 나.*720p-WITH"),
+                new RegExp("미스코리아.*720p-HANrel"),
+                new RegExp("별에서 온 그대.*720p-WITH"),
+                new RegExp("응급남녀.*720p-WITH"),
                 new RegExp("왕가네 식구들.*720p-HANrel")
             ];
 
