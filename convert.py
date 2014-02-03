@@ -29,12 +29,7 @@ while True:
     stats = []
     for root, dirs, files in os.walk(config.DOWNLOAD_DIR):
         for f in files:
-            # collect file's stats - modified time, size, full path
             fullPath = os.path.join(root, f)
-            size = os.path.getsize(fullPath)
-            mtime = os.path.getmtime(fullPath)
-            logger.debug('check: {0}, size: {1}, mtime: {2}'.format(f, size, mtime))
-            stats.append( [mtime, fullPath, size] )
 
             # check extension
             name, ext = os.path.splitext(f)
@@ -50,6 +45,12 @@ while True:
                 logger.error('unsupported ext: {0}'.format(ext))
                 continue
 
+            # collect file's stats - modified time, size, full path
+            size = os.path.getsize(fullPath)
+            mtime = os.path.getmtime(fullPath)
+            logger.debug('check: {0}, size: {1}, mtime: {2}'.format(f, size, mtime))
+            stats.append( [mtime, fullPath, size] )
+            
             if f.startswith(prefix): # converted file
                 logger.debug('Converted file')
                 continue
