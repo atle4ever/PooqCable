@@ -89,7 +89,7 @@ while True:
     for stat in stats:
         sizeSum += stat[2]
 
-        if(sizeSum > 100 * 1024 * 1024 * 1024):
+        if(sizeSum > 300 * 1024 * 1024 * 1024):
             logger.debug('Remove file: {0}'.format(stat[1]))
             os.remove(stat[1])
 
